@@ -1,2 +1,2 @@
-def run(dataset):
+def run(dataset: str):
     print(f"dataset: {dataset}")
