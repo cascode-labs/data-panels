@@ -1,0 +1,8 @@
+-r requirements.txt
+-e --no-deps /workspaces/data-panels
+# Testing
+pip == 22.1
+flit == 3.7
+pytest == 7.1
+pylint == 2.14
+mypy == 0.960
