@@ -33,7 +33,7 @@ dynamic = ["version", "description"]
 "Home" = "https://github.com/cascode-labs/data-panels"
 
 [project.scripts]
-data-panels = "data-panels.cli:data_panels"
+data-panels = "data_panels.cli:data_panels"
 
 [tool.flit.module]
 name = "data_panels"

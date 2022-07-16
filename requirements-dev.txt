@@ -1,5 +1,5 @@
 -r requirements.txt
--e --no-deps /workspaces/data-panels
+-e /workspaces/data-panels
 # Testing
 pip == 22.1
 flit == 3.7
