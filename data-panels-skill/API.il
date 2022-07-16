@@ -1,0 +1,47 @@
+procedure(DpRun(lib cell view history "tttt")
+  "Run data-panels on a Maestro test bench history item
+  It will update the exported test bench setup in the result (dataset)
+  directory and then call data-panels.
+
+  @param lib Library name for the Maestro test bench
+  @param cell Cell name for the Maestro test bench
+  @param view View name for the Maestro test bench
+  @param history History item (dataset) from the Maestro test bench
+  @brief Run data-panels on a Maestro test bench history item
+  "
+  let((sessionName resultPath config_view_path)
+  sessionName = maeOpenSetup(lib cell view ?histName history ?mode "r")
+  resultPath = EFF_createFromMenu(lib cell view history)
+  config_view_path = DpGetViewConfigPath()
+  DpRunPath(resultPath config_view_path)
+))
+
+procedure(DpRunPath(history_path @optional config_path "tt")
+  "Run data-panels on a Maestro test bench history directory path
+
+  @param history_path Path to the history item (dataset) directory
+  @param config_path Optional File path to the configuration toml file.
+  @brief Run data-panels on a Maestro test bench history item
+  "
+  let((command)
+  if(config_path then
+    command = strcat("data-panels --dataset " history_path " --config " config_path)
+  else
+    command = strcat("data-panels --dataset " history_path)
+  )
+  ipcBeginProcess(command "" nil nil nil DpGetLogPath())
+))
+
+procedure(DpGetViewConfigPath(lib cell)
+  nil
+)
+
+procedure(DpGetLogPath()
+  letseq(((log_dir_path "~/.datapanels/virtuoso_logs")
+          (log_file_name "datapanels-virtuoso.log")
+          (log_path strcat(log_dir_path "/" log_file_name)))
+  unless(isDir(log_path)
+    createDirHier(log_dir_path)
+  )
+  log_path
+))
