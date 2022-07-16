@@ -46,7 +46,8 @@
 				"timonwong.shellcheck",
 				"redhat.vscode-yaml",
 				"ms-vscode-remote.vscode-remote-extensionpack",
-				"hediet.vscode-drawio"
+				"hediet.vscode-drawio",
+				"mhutchie.git-graph"
 			]
 		}
 	},
