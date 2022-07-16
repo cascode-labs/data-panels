@@ -1,2 +1,3 @@
 # data-panels
-Export data reports from simulation results to pptx slides
+
+Export rich data reports from simulation results to pptx slides

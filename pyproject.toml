@@ -1,0 +1,39 @@
+[build-system]
+requires = ["flit_core>=3.2"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "data-panels"
+authors = [
+   {name="Curtis Mayberry", email="Curtisma3@gmail.com"},
+   {name="Jaden Ciesielski", email="Jaden.Ciesielski@skyworksinc.com"},
+   {name="Yulin Deng", email="Yulin.Deng@skyworksinc.com"},
+   {name="Tiffany Mayberry", email="Tiffany.Mayberry@skyworksinc.com"},
+]
+maintainers = [
+   {name="Curtis Mayberry", email="Curtisma3@gmail.com"},
+]
+readme = "README.md"
+license = {file="LICENSE"}
+requires-python = ">=3.8"
+classifiers = [
+   "Programming Language :: Python :: 3",
+   "License :: OSI Approved :: MIT License",
+   "Operating System :: OS Independent",
+]
+keywords = [
+   "circuit design",
+   "design automation",
+   "Cadence",
+   "virtuoso",
+]
+dynamic = ["version", "description"]
+
+[project.urls]
+"Home" = "https://github.com/cascode-labs/data-panels"
+
+[project.scripts]
+data-panels = "data-panels.cli:data_panels"
+
+[tool.flit.module]
+name = "data_panels"
