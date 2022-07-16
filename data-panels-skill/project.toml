@@ -1,0 +1,8 @@
+[project]
+name = "data-panels-skill"
+description = "data-panels Cadence SKILL library"
+version = "0.0.1"
+author = "Curtis Mayberry"
+
+[project.urls]
+"home" = "https://github.com/cascode-labs/data-panels"

@@ -1,3 +1,12 @@
+# SKILL
+**/.skillide.*
+*.ils~
+*.il~
+
+# Other
+*~ # e.g. gedit
+.ipynb_checkpoints # Jupyter
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
