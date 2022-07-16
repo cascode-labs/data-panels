@@ -1,4 +1,5 @@
-procedure(DpRun(lib cell view history "tttt")
+Dp = let(()
+procedure(Run(lib cell view history "tttt")
   "Run data-panels on a Maestro test bench history item
   It will update the exported test bench setup in the result (dataset)
   directory and then call data-panels.
@@ -16,7 +17,7 @@ procedure(DpRun(lib cell view history "tttt")
   DpRunPath(resultPath config_view_path)
 ))
 
-procedure(DpRunPath(history_path @optional config_path "tt")
+procedure(RunPath(history_path @optional config_path "tt")
   "Run data-panels on a Maestro test bench history directory path
 
   @param history_path Path to the history item (dataset) directory
@@ -45,3 +46,11 @@ procedure(DpGetLogPath()
   )
   log_path
 ))
+
+list(nil
+  'Run Run
+  'RunPath RunPath
+))
+
+DpRun = Dp->Run
+DpRunPath = Dp->RunPath
