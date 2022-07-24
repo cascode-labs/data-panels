@@ -1,0 +1,43 @@
+let(((Package Import['Package])
+     (Project Import['Project])
+	   (Virtue Import['Virtue])
+	   (Str Import['Str])
+    )
+
+DataPanels = let(()
+
+procedure(Initialize()
+  printf("Initializing data-panels\n")
+  Package->LoadList('(
+    "API.ils"
+    "MaeHistoryMenu.il"
+    )
+    ?root_path Virtue->GetCurrentFileDirectory()
+    ?continue_on_error 't)
+  Package->LoadList('(
+    "ExportCallback.ils"
+    "ExportFileFactory.ils"
+    "ExportCellImage.ils"
+    "ExportCornersSDB.ils"
+    "ExportInfoToml.ils"
+    "ExportOutputsCSV.ils"
+    "ExportResultsCSV.ils"
+    )
+    ?root_path Str->PathConcat(
+      Virtue->GetCurrentFileDirectory() "MaestroExport")
+    ?continue_on_error 't)
+  printf("  Done, Initialized data-panels\n")
+  
+)
+
+list(nil
+  'Initialize Initialize
+))
+
+DataPanels = Package->New('DataPanels DataPanels
+             ?project DataPanels)
+Project->New(DataPanels Virtue->GetCurrentFileDirectory())
+
+DataPanels-> Initialize()
+
+)

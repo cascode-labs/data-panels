@@ -1,0 +1,32 @@
+let(((sessionMem "") 
+	 (hsdbMem 0))
+
+; Callback for exporting sim files during simulation run
+procedure(postCreateHistory_export_sim_files_for_datapanels(session hsdb)
+  let(()
+	; This callback gets called multiple times during the same simulation run, and the session and hsdb are the same for these.
+	; Will only export when either the session or the hsdb are different than previous one. (Avoids multiple executions of the export call.)
+	if( strcmp(sessionMem session) != 0 || hsdbMem != hsdb then
+		startExport(session hsdb)
+	)
+    ;EFF_ExportFromCB(session hsdb)
+))
+
+procedure(startExport(session hsdb) let(()
+	sessionMem = session
+	hsdbMem = hsdb
+    EFF_ExportFromCB(session hsdb)
+))
+
+; Connect the callback function with the signal
+procedure(connectADEXLTrigger_export_sim_files_for_datapanels(session_name)
+  axlSessionConnect( session_name "postCreateHistoryEntry" 'postCreateHistory_export_sim_files_for_datapanels)
+)
+
+)
+
+inSkill(connectADEXLTrigger_export_sim_files_for_datapanels = 
+  Import['DataPanels]->connectADEXLTrigger_export_sim_files_for_datapanels)
+
+; Register callback when ADE (G)XL session is launched
+axlSessionRegisterCreationCallback('connectADEXLTrigger_export_sim_files_for_datapanels)

@@ -1,0 +1,30 @@
+;  Saves the following information to the result path if it does not exist:
+;   * Outputs corners.sdb:  Saved to <result path>/test_bench/corners.sdb
+
+let(((DataPanels Import['DataPanels]))
+    procedure(ExportCornersSDB(testBenchDir sessionName hsdb) let((cornersPath)
+        cornersPath = strcat(testBenchDir "/corners.sdb")
+        if( isFile(cornersPath)
+            then
+                printf("Corners file already exists at:\n  %s\n" cornersPath)
+            else
+                create( testBenchDir sessionName hsdb cornersPath )
+        )
+    ))
+
+    procedure(create(testBenchDir sessionName hsdb cornersPath) let((success)
+        success = exportCornerInfo( sessionName hsdb cornersPath)
+        when(success
+            printf("Saved corners information to:\n  %s\n" cornersPath)
+        )
+    ))
+
+    procedure(exportCornerInfo( sessionName sdb sdb_path ) let((success)
+        success = axlExportSetup( sessionName sdb sdb_path `("corners"))
+        unless(success
+            warn("Couldn't save the corner setup to:\n  %s\n" sdb_path))
+        success
+    ))
+
+    putprop(DataPanels ExportCornersSDB 'ExportCornersSDB)
+)

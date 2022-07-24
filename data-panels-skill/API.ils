@@ -1,4 +1,5 @@
-Dp = let(()
+let(((DataPanels Import['DataPanels]))
+
 procedure(Run(lib cell view history "tttt")
   "Run data-panels on a Maestro test bench history item
   It will update the exported test bench setup in the result (dataset)
@@ -12,9 +13,9 @@ procedure(Run(lib cell view history "tttt")
   "
   let((sessionName resultPath config_view_path)
   sessionName = maeOpenSetup(lib cell view ?histName history ?mode "r")
-  resultPath = EFF_createFromMenu(lib cell view history)
+  resultPath = EFF_ExportFromMenu(lib cell view history)
   config_view_path = DpGetViewConfigPath()
-  DpRunPath(resultPath config_view_path)
+  RunPath(resultPath config_view_path)
 ))
 
 procedure(RunPath(history_path @optional config_path "tt")
@@ -33,24 +34,21 @@ procedure(RunPath(history_path @optional config_path "tt")
   ipcBeginProcess(command "" nil nil nil DpGetLogPath())
 ))
 
-procedure(DpGetViewConfigPath(lib cell)
-  nil
-)
+procedure(GetDpConfigPath(lib cell "tt")
+  let(((view_list '("datapanels")))
+  dbOpenCellViewByType(lib cell view_list "toml" "r")
+))
 
 procedure(DpGetLogPath()
   letseq(((log_dir_path "~/.datapanels/virtuoso_logs")
           (log_file_name "datapanels-virtuoso.log")
           (log_path strcat(log_dir_path "/" log_file_name)))
-  unless(isDir(log_path)
+  unless(isDir(log_dir_path)
     createDirHier(log_dir_path)
   )
   log_path
 ))
 
-list(nil
-  'Run Run
-  'RunPath RunPath
-))
-
-DpRun = Dp->Run
-DpRunPath = Dp->RunPath
+putprop(DataPanels Run 'Run)
+putprop(DataPanels RunPath 'RunPath)
+)

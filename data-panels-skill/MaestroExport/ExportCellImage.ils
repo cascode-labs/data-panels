@@ -1,0 +1,29 @@
+;  Saves the following information to its test's psf folder (<result path> /psf/ <test name> /test_bench/) if it doesn't already exist
+;   * Test's Design schematic picture: Saved as <library name>-<cell name>-<view name>.png
+
+let(((DataPanels Import['DataPanels]))
+    procedure(ExportCellImage(design_LCV psfTestBenchDir) let((imagePath)
+        imagePath = getImagePath(design_LCV psfTestBenchDir)
+        if(isFile(imagePath) then
+            printf("Cell Image aleady exists at:\n  %s\n" imagePath)
+        else
+			exportCellImage(design_LCV imagePath)
+        )
+    ))
+
+    procedure(getImagePath(design_LCV psfTestBenchDir) let(()
+        cond(
+            ((length(design_LCV) == 3) strcat(psfTestBenchDir "/" car(design_LCV) "-" nth(1 design_LCV) "-" nth(2 design_LCV) ".png"))
+            ((length(design_LCV) == 6) strcat(psfTestBenchDir "/" nth(3 design_LCV) "-" nth(4 design_LCV) "-" nth(5 design_LCV) ".png"))
+        )
+    ))
+
+    procedure(exportCellImage(design_LCV imagePath) let(()
+        cond(
+			((length(design_LCV) == 3) Mae->ExportCellImage(car(design_LCV) nth(1 design_LCV) nth(2 design_LCV) imagePath))
+			((length(design_LCV) == 6) Mae->ExportCellImage(nth(3 design_LCV) nth(4 design_LCV) nth(5 design_LCV) imagePath))
+		)
+    ))
+
+    putprop(DataPanels ExportCellImage 'ExportCellImage)
+)

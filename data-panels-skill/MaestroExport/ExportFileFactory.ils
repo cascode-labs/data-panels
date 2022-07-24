@@ -1,0 +1,95 @@
+; Saves additional data information about the history item
+;  to the psf result folders.
+;  Returns the history item's result path
+;
+;  Saves the following information to the result path:
+;   * Outputs setup CSV:  Saved to <result path>/test_bench/maestro_outputs.csv
+;
+;  Saves the following information to each test's psf folder (<result path> /psf/ <test name> /test_bench/)
+;   * Test's Design schematic picture: Saved as <library name>-<cell name>-<view name>.png
+let(((DataPanels Import['DataPanels]))
+
+    
+    procedure(ExportFromCB(sessionName hsdb) let((lib cell view history resultDirPath)
+        printf("===============[ Export start ]===============\n")
+        lib = axlGetSessionLibName(sessionName)
+        cell = axlGetSessionCellName(sessionName)
+        view = axlGetSessionViewName(sessionName)
+        history = axlGetHistoryName(hsdb)
+        resultDirPath = create(lib cell view history sessionName)
+        printf("===============[ Export  done ]===============\n")
+        resultDirPath
+    ))
+
+    procedure(ExportFromMenu(lib cell view history) let((sessionName resultDirPath)
+        printf("===============[ Export start ]===============\n")
+        sessionName = maeOpenSetup(lib cell view ?histName history ?mode "r")
+        resultDirPath = create(lib cell view history sessionName)
+        printf("===============[ Export  done ]===============\n")
+        resultDirPath
+    ))
+
+    procedure(create(lib cell view history sessionName) let((tests resultDirPath testBenchDirPath sdb historyEntry)
+        "Exports all test bench information files if they don't exist yet"
+        tests = maeGetSetup(?typeName "tests"
+                            ?enabled t
+                            ?session sessionName)
+
+		sdb = axlGetMainSetupDB(sessionName)
+		historyEntry = axlGetHistoryEntry( sdb history )
+
+        resultDirPath = getResultDirPath(historyEntry car(tests))
+        testBenchDirPath = createTestBenchDir(resultDirPath)
+        printPreExportInfo(lib cell view history resultDirPath)
+        DataPanels->ExportMaestroHistoryInfoTable()
+        DataPanels->ExportOutputsCSV(testBenchDirPath sessionName)
+        DataPanels->ExportCornersSDB(testBenchDirPath sessionName sdb)
+        DataPanels->exportMaestroOutputResultsCSV(testBenchDirPath sessionName history)
+        DataPanels->ExportResultsCSV(testBenchDirPath sessionName history)
+	    printf("Complete: Test bench setup exported to result folder\n")
+	    resultDirPath
+    ))
+
+    procedure(getResultDirPath( historyEntry test ) let((resultDirPath)
+        resultDirPath = axlGetPointRunDir(historyEntry test)
+        resultDirPath = simplifyFilename(strcat(resultDirPath "/../.."))
+        resultDirPath = substring(resultDirPath 1 length(resultDirPath)-1) ; Remove trailing slash
+        resultDirPath
+    ))
+
+    procedure(createTestBenchDir( resultDirPath ) let((testBenchDir)
+        testBenchDir = strcat(resultDirPath "/test_bench")
+        if( isDir(testBenchDir)
+            then
+                printf("Test Bench Directory already exists.\n")
+            else
+                createDir(testBenchDir)
+        )
+		testBenchDir
+    ))
+
+    procedure(printPreExportInfo(lib cell view history resultDirPath) let(()
+        printf("\n")
+        printf("Exporting test bench data to results folder\n")
+        printf("-------------------------------------------\n")
+        printf("  Lib: %s\n" lib)
+        printf("  Cell: %s\n" cell)
+        printf("  View: %s\n" view)
+        printf("  History: %s\n" history)
+        printf("  Result Folder: %s\n" resultDirPath)
+        printf("  Log Path: %s\n" strcat(resultDirPath "/datapanels.log"))
+    ))
+
+    procedure(createPSFTestBenchDir(resultDirPath test) let((testBenchDir)
+        testBenchDir = strcat(resultDirPath "/psf/" test "/test_bench" )
+        if( isDir(testBenchDir) then
+            printf("Test bench directory already exists at:\n  %s\n" testBenchDir)
+        else
+            createDir(testBenchDir)
+        )
+		testBenchDir
+    ))
+
+    putprop(DataPanels ExportFromCB 'ExportFromCB)
+    putprop(DataPanels ExportFromMenu 'ExportFromMenu)
+)

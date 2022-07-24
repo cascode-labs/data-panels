@@ -12,18 +12,19 @@ define(axlGetDataViewHistoryUserMenu(axlSessionName historySDB)
   )
   ; Remove the last 2 directories from the path (/psf/[TEST_NAME])
   DP_RESULT_PATH = simplifyFilename(strcat(firstTestResultDir "/../.."))
-  DP_RESULT_PATH = substring(DP_resultPath 1 length(DP_resultPath)-1) ; Remove trailing slash
+  DP_RESULT_PATH = substring(DP_RESULT_PATH 1 length(DP_RESULT_PATH)-1) ; Remove trailing slash
   DP_LCVH = list(axlGetSessionLibName(axlSessionName)
                 axlGetSessionCellName(axlSessionName)
                 axlGetSessionViewName(axlSessionName)
                 axlGetHistoryName(historySDB))
 
   ; Add to menu.
-  list(list("Results Path" "printf(\"Result directory for %s is at:  %s\n\" nth(3 DP_LCVH) DP_RESULT_PATH)" "false")
+  list(
+    list("Results Path" "printf(\"Result directory for %s is at:  %s\n\" nth(3 DP_LCVH) DP_RESULT_PATH)" "false")
     ; data-panels is a submenu
     list("data-panels" list(
         ; submenu items
-        list("Run" "DpRun(nth(0 DP_LCVH) nth(1 DP_LCVH) nth(2 DP_LCVH) nth(3 DP_LCVH))" "false")
-    )
-  ))
+        list("Run" "Import['DataPanels]->Run(nth(0 DP_LCVH) nth(1 DP_LCVH) nth(2 DP_LCVH) nth(3 DP_LCVH))" "false")
+    ))
+  )
 ))

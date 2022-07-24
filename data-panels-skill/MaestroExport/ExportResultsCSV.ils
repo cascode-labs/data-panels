@@ -1,0 +1,21 @@
+;  Saves the following information to the result path if it does not exist:
+;   * Output results CSV:  Saved to <result path>/test_bench/maestro_output_results.csv
+
+let(((DataPanels Import['DataPanels]))
+    procedure(ExportResultsCSV(testBenchDir sessionName historyName) let( (csvPath)
+        csvPath = strcat(testBenchDir "/maestro_output_results.csv")
+        create(testBenchDir sessionName csvPath historyName)
+    ))
+
+    procedure(create(testBenchDir sessionName csvPath historyName) let((success)
+		success = maeExportOutputView( ?session sessionName ?fileName csvPath ?view "Detail" ?historyName historyName)
+        if( success
+            then
+                printf("Saved Maestro output results to csv file:\n  %s\n" csvPath)
+            else
+                warn("Couldn't save the maestro output results to:\n  %s\n" testBenchDir)
+        )
+    ))
+
+    putprop(DataPanels ExportResultsCSV 'ExportResultsCSV)
+)

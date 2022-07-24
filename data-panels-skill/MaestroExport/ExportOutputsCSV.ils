@@ -1,0 +1,25 @@
+;  Saves the following information to the result path if it does not exist:
+;   * Outputs setup CSV:  Saved to <result path>/test_bench/maestro_outputs.csv
+
+let(((DataPanels Import['DataPanels]))
+    procedure(ExportOutputsCSV(testBenchDir sessionName) let( (csvPath)
+        csvPath = strcat(testBenchDir "/maestro_outputs.csv")
+        if( isFile(csvPath)
+            then
+                printf("Maestro CSV already exists at:\n  %s\n" csvPath)
+            else
+                create(testBenchDir sessionName csvPath)
+        )
+    ))
+
+    procedure(create(testBenchDir sessionName csvPath) let((success)
+		success = axlOutputsExportToFile(sessionName csvPath)
+        if( success
+            then
+                printf("Saved Maestro outputs to csv file:\n  %s\n" csvPath)
+            else
+                warn("Couldn't save the maestro outputs to:\n  %s\n" testBenchDir)
+        )
+    ))
+    putprop(DataPanels ExportOutputsCSV 'ExportOutputsCSV)
+)
