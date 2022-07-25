@@ -7,7 +7,8 @@
 ;
 ;  Saves the following information to each test's psf folder (<result path> /psf/ <test name> /test_bench/)
 ;   * Test's Design schematic picture: Saved as <library name>-<cell name>-<view name>.png
-let(((DataPanels Import['DataPanels]))
+let(((DataPanels Import['DataPanels])
+     (Str Import['Str]))
 
     
     procedure(ExportFromCB(sessionName hsdb) let((lib cell view history resultDirPath)
@@ -29,24 +30,24 @@ let(((DataPanels Import['DataPanels]))
         resultDirPath
     ))
 
-    procedure(create(lib cell view history sessionName) let((tests resultDirPath testBenchDirPath sdb historyEntry)
+    procedure(create(lib cell view history sessionName) 
+        let((tests resultDirPath testBenchDirPath toml_info_filepath sdb historyEntry)
         "Exports all test bench information files if they don't exist yet"
         tests = maeGetSetup(?typeName "tests"
                             ?enabled t
                             ?session sessionName)
 
-		sdb = axlGetMainSetupDB(sessionName)
-		historyEntry = axlGetHistoryEntry( sdb history )
+		    sdb = axlGetMainSetupDB(sessionName)
+		    historyEntry = axlGetHistoryEntry( sdb history )
 
         resultDirPath = getResultDirPath(historyEntry car(tests))
         testBenchDirPath = createTestBenchDir(resultDirPath)
         printPreExportInfo(lib cell view history resultDirPath)
-        DataPanels->ExportMaestroHistoryInfoTable()
+        DataPanels->ExportMaestroHistoryInfoTable(sessionName  historyEntry testBenchDirPath)
         DataPanels->ExportOutputsCSV(testBenchDirPath sessionName)
         DataPanels->ExportCornersSDB(testBenchDirPath sessionName sdb)
-        DataPanels->exportMaestroOutputResultsCSV(testBenchDirPath sessionName history)
         DataPanels->ExportResultsCSV(testBenchDirPath sessionName history)
-	    printf("Complete: Test bench setup exported to result folder\n")
+	    printf("Complete: Test bench setup exported to result folder:\n  %s" resultDirPath)
 	    resultDirPath
     ))
 

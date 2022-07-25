@@ -1,5 +1,5 @@
 -r requirements.txt
--e /workspaces/data-panels
+-e ../data-panels
 pip == 22.1.2
 flit == 3.7.1
 pytest == 7.1.2

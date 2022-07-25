@@ -13,9 +13,10 @@ procedure(Run(lib cell view history "tttt")
   "
   let((sessionName resultPath config_view_path)
   sessionName = maeOpenSetup(lib cell view ?histName history ?mode "r")
-  resultPath = EFF_ExportFromMenu(lib cell view history)
-  config_view_path = DpGetViewConfigPath()
-  RunPath(resultPath config_view_path)
+  resultPath = DataPanels->ExportFromMenu(lib cell view history)
+  config_view_path = GetDpConfigPath(lib cell)
+  when(config_view_path
+    RunPath(resultPath config_view_path))
 ))
 
 procedure(RunPath(history_path @optional config_path "tt")
@@ -35,8 +36,14 @@ procedure(RunPath(history_path @optional config_path "tt")
 ))
 
 procedure(GetDpConfigPath(lib cell "tt")
-  let(((view_list '("datapanels")))
-  dbOpenCellViewByType(lib cell view_list "toml" "r")
+  let(((view_list '("datapanels")) cv)
+  cv = ddGetObj(lib cell "datapanels")
+  if(cv then
+    cv~>readPath
+  else
+    warn("A 'datapanels' view of the test bench must exist")
+    nil
+  )
 ))
 
 procedure(DpGetLogPath()

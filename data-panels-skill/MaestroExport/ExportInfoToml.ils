@@ -1,23 +1,26 @@
 ; Exports information about a Maestro view
 let(((Package Import['Package])
-	 (Virtue Import['Virtue]))
+	   (Virtue Import['Virtue])
+	   (Toml Import['Toml])
+	   (Str Import['Str])
+    )
 
-procedure(ExportMaestroHistoryInfoTable(sessionName hsdb filePath "t")
-  let(()
-  if(!isFile(filePath) then
-    Toml->Write(BuildMaestroHistoryInfoTable(sessionName hsdb) 
-                filePath)
+procedure(ExportMaestroHistoryInfoTable(sessionName hsdb testBenchDirPath "txt")
+  let(((filepath Str->PathConcat(testBenchDirPath "history.toml")))
+  if(!isFile(filepath) then
+    Toml->WriteFile(filepath
+      BuildMaestroHistoryInfoTable(sessionName hsdb testBenchDirPath))
   else
-    printf("Maestro info TOML file already exists at:\n  %s\n" filePath)
+    printf("Maestro info TOML file already exists at:\n  %s\n" filepath)
   )
 ))
 
-procedure(BuildMaestroHistoryInfoTable(sessionName historyEntry "tx")
+procedure(BuildMaestroHistoryInfoTable(sessionName historyEntry testBenchDirPath "txt")
     let((table)
     table = makeTable(strcat("test_bench_info_" sessionName))
     table["history"] = BuildHistoryInfoTable(historyEntry)
     table["maestro"] = BuildMaestroInfoTable(sessionName)
-    table["maestro.tests"] = BuildAllTestInfoTables(sessionName)
+    table["maestro.tests"] = BuildAllTestInfoTables(sessionName testBenchDirPath)
     MaeAddProjectName(table)
     table
 ))
@@ -38,8 +41,8 @@ procedure(BuildMaestroInfoTable(sessionName "t")
     table
 ))
 
-procedure(TestInfoTable(sessionName testName "tt")
-    let((table config test)
+procedure(TestInfoTable(sessionName testName testBenchDirPath "ttt")
+    let((table config test schematic_filepath)
     "Reads a test's info into a table"
     table = makeTable(testName)
     test = maeGetTestSession(testName ?session sessionName)    
@@ -59,17 +62,24 @@ procedure(TestInfoTable(sessionName testName "tt")
         table["schematic_cell"] = table["design_cell"]
         table["schematic_view"] = table["design_view"]
     )
+    schematic_filepath = Str->PathConcat(testBenchDirPath 
+      strcat(table["schematic_library"] "-" table["schematic_cell"] "-"
+             table["schematic_view"] ".png"))
+    unless(isFile(schematic_filepath)
+      DataPanels->ExportCellImage(
+        list(table["schematic_library"] table["schematic_cell"] table["schematic_view"])
+        schematic_filepath))
     table
 ))
 
-procedure(BuildAllTestInfoTables(sessionName)
+procedure(BuildAllTestInfoTables(sessionName testBenchDirPath "tt")
     let((table)
     tests = maeGetSetup(?typeName "tests"
                         ?enabled t
                         ?session sessionName)
     table = makeTable("tests")
     foreach(test tests
-        table[test] = TestInfoTable(sessionName test)
+        table[test] = TestInfoTable(sessionName test testBenchDirPath)
     )
     table
 ))

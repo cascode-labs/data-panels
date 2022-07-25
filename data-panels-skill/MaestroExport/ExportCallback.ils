@@ -1,4 +1,5 @@
-let(((sessionMem "") 
+let(((DataPanels Import['DataPanels])
+	 (sessionMem "") 
 	 (hsdbMem 0))
 
 ; Callback for exporting sim files during simulation run
@@ -15,7 +16,7 @@ procedure(postCreateHistory_export_sim_files_for_datapanels(session hsdb)
 procedure(startExport(session hsdb) let(()
 	sessionMem = session
 	hsdbMem = hsdb
-    EFF_ExportFromCB(session hsdb)
+    DataPanels->ExportFromCB(session hsdb)
 ))
 
 ; Connect the callback function with the signal

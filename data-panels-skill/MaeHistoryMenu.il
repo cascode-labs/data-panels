@@ -20,7 +20,7 @@ define(axlGetDataViewHistoryUserMenu(axlSessionName historySDB)
 
   ; Add to menu.
   list(
-    list("Results Path" "printf(\"Result directory for %s is at:  %s\n\" nth(3 DP_LCVH) DP_RESULT_PATH)" "false")
+    list("Results Path" "printf(\"Result directory for %s is at:\n  %s\n\" nth(3 DP_LCVH) DP_RESULT_PATH)" "false")
     ; data-panels is a submenu
     list("data-panels" list(
         ; submenu items
