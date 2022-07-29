@@ -9,7 +9,11 @@ from data_panels.datasets.virtuoso.SrrOutputsCsvFile import SrrOutputsCsvFile
 from data_panels.datasets.interface.TestBench import TestBench
 
 class PsfDatasetReader():
-    "Reads in a "
+    "Reads in a PSF data using the pysrr library"
+
+    ANALYSES = (
+        ("tran-tran", "transient"),
+    )
 
     def __init__(self, dataset_path: os.PathLike) -> None:
         self._path: Path = Path(dataset_path)
@@ -40,7 +44,7 @@ class PsfDatasetReader():
             self.read_analyses(test)
 
     def read_analyses(self, test: str) -> pd.DataFrame:
-        database = pysrrDataBase(self.path / test / "psf")
+        database = pysrrDataBase(self.path / "psf" / test / "psf")
         dataset_names = database.dataSetNameList()
         for dataset_name in database.dataSetNameList():
             dataset = database.getDataSet(dataset_name)
