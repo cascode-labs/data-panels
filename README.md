@@ -18,6 +18,17 @@ Export rich data reports from simulation results to pptx slides
   </p>
 </p>
 
+## Benefits
+
+* Improves presentation consistency and quality across designers and between
+  projects
+* Improves data coverage
+* Improves designer productivity
+* Improves communication
+* Automates measurements allowing for easier comparison with other reports
+* Automatically compares measurements with spec and highlights
+  those that don't pass
+
 ## Maestro Interface
 
 Run a data-panel report from a history item's context menu in a few clicks:
