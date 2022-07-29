@@ -18,7 +18,7 @@ Export rich data reports from simulation results to pptx slides
   </p>
 </p>
 
-## Maestro interface
+## Maestro Interface
 
 Run a data-panel report from a history item's context menu in a few clicks:
 
