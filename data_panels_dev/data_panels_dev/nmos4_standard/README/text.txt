@@ -1,0 +1,24 @@
+Model based on the "MOS 11" model by Geoffrey Coram from "The Designer's Guide" Community
+Minor modifications were made to get it to run in Virtuoso IC6.1.8
+
+https://designers-guide.org/verilog-ams/index.html
+
+
+MOS Model 11
+
+Version 2, 1 Apr 05
+
+Geoffrey Coram, Analog Devices
+
+Downloaded from The Designer's Guide (www.designers-guide.org).
+Post any questions on www.designers-guide.org/Forum.
+
+MOS Model 11 Verilog-A implementation
+Level 11010 "physical scaling"
+Based on the report "NL-UR2002/802: MOS Model 11 Level 1101"
+by R. van Langevelde, A.J. Scholten, and D.B.M Klaassen
+Copyright Koninklijke Philips Electronics N.V. 2003/2004
+
+Verilog-A implementation by Geoffrey Coram, Analog Devices, Inc.
+revision 0.9
+
