@@ -12,9 +12,9 @@ Export rich data reports from simulation results to pptx slides
     <br />
     <!--<a href="http://idshost/DataPanels/">Documentation</a>
     · -->
-    <a href="https://github.com/skyworksinc/DataPanels/issues">Report Bug</a>
+    <a href="https://github.com/cascode-labs/data-panels">Report Bug</a>
     ·
-    <a href="https://github.com/skyworksinc/DataPanels/issues">Request Feature</a>
+    <a href="https://github.com/cascode-labs/data-panels">Request Feature</a>
   </p>
 </p>
 
