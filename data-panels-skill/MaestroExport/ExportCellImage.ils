@@ -2,7 +2,7 @@
 ;   * Test's Design schematic picture: Saved as <library name>-<cell name>-<view name>.png
 
 let(((DataPanels Import['DataPanels]))
-    procedure(ExportCellImage(design_LCV psfTestBenchDir) let((imagePath)
+    procedure(ExportCellImage('design_LCV' psfTestBenchDir) let((imagePath)
         imagePath = getImagePath(design_LCV psfTestBenchDir)
         if(isFile(imagePath) then
             printf("Cell Image aleady exists at:\n  %s\n" imagePath)
